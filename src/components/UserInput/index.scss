@@ -1,0 +1,10 @@
+@import '../../styles/start';
+
+.Form {
+  background-color: $white;
+  padding: $spacer;
+
+  @include media-breakpoint-up(md) {
+    width: 40%;
+  }
+}
