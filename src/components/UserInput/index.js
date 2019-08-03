@@ -1,27 +1,22 @@
-import React, { useState } from 'react'
-import { Form, Button } from 'react-bootstrap'
+import React, { useState, useEffect } from 'react'
+import { Form } from 'react-bootstrap'
+import NumberFormat from 'react-number-format'
 
 import './index.scss'
+import InputGroupAccounting from '../InputGroupAccounting'
 import nper from '../../utilities/nper'
 
 
-export default function () {
+export default function UserInput() {
 
-  const [portfolioPresent, setPortfolioPresent] = useState(525686)
-  const [savingsPresentMonthly, setSavingsPresentMonthly] = useState(1748)
+  const [portfolioPresent, setPortfolioPresent] = useState(10000)
+  const [savingsPresentMonthly, setSavingsPresentMonthly] = useState(800)
   const [expensesFutureMonthly, setExpensesFutureMonthly] = useState(2700)
   const [yearsToRetire, setYearsToRetire] = useState('')
   const [withdrawalRate] = useState(.04)
   const [returnOnSavings] = useState(10)
 
-  const onFieldChange = ( event ) => { console.log('onFieldChange')
-
-
-
-  }
-
-  const onSubmit = ( event ) => { console.log('onSubmit')
-    event.preventDefault()
+  useEffect( () => {
 
     const ir = returnOnSavings / 12
     const pmt = 0 - savingsPresentMonthly
@@ -30,52 +25,71 @@ export default function () {
 
     setYearsToRetire( nper( ir, pmt, pv, fv ) / 12 )
 
+  }, [
+    portfolioPresent,
+    savingsPresentMonthly,
+    expensesFutureMonthly,
+    withdrawalRate,
+    returnOnSavings,
+  ] )
+
+  const onSubmit = ( event ) => { console.log('onSubmit')
+    event.preventDefault()
   }
 
   return (
-  <div className="Form">
+  <div className="user-input">
+
+    <h2>How many years until you can retire?</h2>
 
     <Form onSubmit={ onSubmit }>
 
       <Form.Group controlId="portfolio-present">
-        <Form.Label>Current Savings Balance</Form.Label>
-        <Form.Control
-          type="number"
+        <Form.Label>
+          How much is in your savings now?<br />
+          <small>(Current Porfolio Value)</small>
+        </Form.Label>
+        <InputGroupAccounting
           value={ portfolioPresent }
-          onChange = { event => {
-            setPortfolioPresent( event.target.value )
-            onFieldChange( event )
-          } }
+          onValueChange={ value => setPortfolioPresent( value ) }
         />
       </Form.Group>
 
       <Form.Group controlId="savings-present-monthly">
-        <Form.Label>Monthly Savings</Form.Label>
-        <Form.Control
-          type="number"
+        <Form.Label>
+          How much do you put in savings each month?
+        </Form.Label>
+        <InputGroupAccounting
           value={ savingsPresentMonthly }
-          onChange = { event => {
-            setSavingsPresentMonthly( event.target.value )
-            onFieldChange( event )
-          } }
+          onValueChange={ value => setSavingsPresentMonthly( value ) }
         />
       </Form.Group>
 
       <Form.Group controlId="expenses-future-monthly">
-        <Form.Label>Monthly expenses after retirement</Form.Label>
-        <Form.Control
-          type="number"
+        <Form.Label>
+          What will your monthly expenses be after retirement?
+        </Form.Label>
+        <InputGroupAccounting
           value={ expensesFutureMonthly }
-          onChange = { event => {
-            setExpensesFutureMonthly( event.target.value )
-            onFieldChange( event )
-          } }
+          onValueChange={ value => setExpensesFutureMonthly( value ) }
         />
       </Form.Group>
 
+      {/*
       <Button type="submit" variant="primary">Calculate</Button>
+      */}
 
-      <h3>Years to retire: { yearsToRetire }</h3>
+      { yearsToRetire && (
+        <p className="h4">
+          <NumberFormat
+            value={ yearsToRetire }
+            thousandSeparator={ true }
+            displayType="text"
+            decimalScale={ 2 }
+          />{' '}
+          years <span style={{ display:'inline-block' }}>to retirement</span>
+        </p>
+      ) }
 
     </Form>
 
