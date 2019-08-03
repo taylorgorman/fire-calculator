@@ -2,14 +2,17 @@ import React, { useState } from 'react'
 import { Form, Button } from 'react-bootstrap'
 
 import './index.scss'
+import nper from '../../utilities/nper'
 
 
 export default function () {
 
-  const [portfolioPresent, setPortfolioPresent] = useState('')
-  const [savingsPresentMonthly, setSavingsPresentMonthly] = useState('')
-  const [expensesFutureMonthly, setExpensesFutureMonthly] = useState('')
-  const [withdrawalRate] = useState(0.04)
+  const [portfolioPresent, setPortfolioPresent] = useState(525686)
+  const [savingsPresentMonthly, setSavingsPresentMonthly] = useState(1748)
+  const [expensesFutureMonthly, setExpensesFutureMonthly] = useState(2700)
+  const [yearsToRetire, setYearsToRetire] = useState('')
+  const [withdrawalRate] = useState(.04)
+  const [returnOnSavings] = useState(10)
 
   const onFieldChange = ( event ) => { console.log('onFieldChange')
 
@@ -20,7 +23,12 @@ export default function () {
   const onSubmit = ( event ) => { console.log('onSubmit')
     event.preventDefault()
 
+    const ir = returnOnSavings / 12
+    const pmt = 0 - savingsPresentMonthly
+    const pv = 0 - portfolioPresent
+    const fv = expensesFutureMonthly * 12 / withdrawalRate
 
+    setYearsToRetire( nper( ir, pmt, pv, fv ) / 12 )
 
   }
 
@@ -54,7 +62,7 @@ export default function () {
       </Form.Group>
 
       <Form.Group controlId="expenses-future-monthly">
-        <Form.Label>Expenses after retirement</Form.Label>
+        <Form.Label>Monthly expenses after retirement</Form.Label>
         <Form.Control
           type="number"
           value={ expensesFutureMonthly }
@@ -65,7 +73,9 @@ export default function () {
         />
       </Form.Group>
 
-      <Button variant="primary" type="submit">Calculate</Button>
+      <Button type="submit" variant="primary">Calculate</Button>
+
+      <h3>Years to retire: { yearsToRetire }</h3>
 
     </Form>
 
