@@ -1,16 +1,16 @@
 import React from 'react'
+import { BrowserRouter as Router, Route } from 'react-router-dom'
 
-import './index.css'
-import UserInput from '../UserInput'
+import Calculator from '../Calculator'
 
 
 export default function () {
 
   return (
 
-    <div className="App">
-      <UserInput />
-    </div>
+    <Router>
+      <Route exact path="/" component={ Calculator } />
+    </Router>
 
   )
 
