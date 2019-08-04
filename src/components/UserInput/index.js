@@ -79,19 +79,21 @@ export default function UserInput() {
       <Button type="submit" variant="primary">Calculate</Button>
       */}
 
-      { yearsToRetire && (
-        <p className="h4">
-          <NumberFormat
-            value={ yearsToRetire }
-            thousandSeparator={ true }
-            displayType="text"
-            decimalScale={ 2 }
-          />{' '}
-          years <span style={{ display:'inline-block' }}>to retirement</span>
-        </p>
-      ) }
-
     </Form>
+
+    { yearsToRetire && (
+      <p className="h2 years-to-retire">
+        <NumberFormat
+          value={ yearsToRetire }
+          thousandSeparator={ true }
+          displayType="text"
+          decimalScale={ 2 }
+        />{' '}
+        <small>
+          years <span style={{ display:'inline-block' }}>to retirement</span>
+        </small>
+      </p>
+    ) }
 
   </div>
   )
