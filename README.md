@@ -5,3 +5,4 @@
 - [Monarch](https://www.monarchmoney.com)
 
 ## To do
+- Update favicon
