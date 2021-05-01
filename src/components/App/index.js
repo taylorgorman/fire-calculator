@@ -5,15 +5,11 @@ import Calculator from '../Calculator'
 import StyleGuide from '../StyleGuide'
 
 
-export default function () {
-
+export default function App() {
   return (
-
     <Router>
-      <Route exact path="/" component={ Calculator } />
-      <Route exact path="/style-guide" component={ StyleGuide } />
+      <Route exact path="/" component={Calculator} />
+      <Route exact path="/style-guide" component={StyleGuide} />
     </Router>
-
-  )
-
+  );
 }
